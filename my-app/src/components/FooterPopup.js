@@ -13,7 +13,6 @@ const FooterPopup = ({ title, content, onClose }) => {
     </div>
   );
 };
-
 const styles = {
   overlay: {
     position: "fixed",

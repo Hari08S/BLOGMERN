@@ -124,19 +124,19 @@ const styles = {
   },
   title: {
     position: "absolute",
-    top: "10%",
+    top: "13%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     color: "white",
   },
   subtitle: {
     position: "absolute",
-    top: "15%",
+    top: "18%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     color: "white",
     fontFamily: "IM FELL DW Pica SC",
-    fontSize: "35px",
+    fontSize: "30px",
   },
   ctaButton: {
     backgroundImage: "linear-gradient(to right, red, black)",

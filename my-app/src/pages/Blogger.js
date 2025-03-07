@@ -93,7 +93,7 @@ export default function Blogger() {
       content: "Write something...",
       author: "Anonymous",
       summary: "Blog Summary",
-      image: "", // Placeholder
+      image: "", 
     };
     setBlogs((prevBlogs) => [ newBlog,...prevBlogs]);
     setEditMode(newBlog.id);
@@ -323,7 +323,7 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    flexGrow: 1, // Allows content to take up available space
+    flexGrow: 1, 
   },
   blogItem: {
     border: "1px solid #ddd",
@@ -383,7 +383,7 @@ const styles = {
     gap: "1rem",
     backgroundColor: "black",
     color: "white",
-    marginTop: "auto", // Pushes the footer to the bottom
+    marginTop: "auto", 
   },
   footerLink: {
     textDecoration: "none",
