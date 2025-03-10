@@ -9,6 +9,8 @@ const FooterPopup = ({ title, content, onClose }) => {
         <button style={styles.closeButton} onClick={onClose}>
           Close
         </button>
+        <ul>
+        </ul>
       </div>
     </div>
   );

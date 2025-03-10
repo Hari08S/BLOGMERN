@@ -1,0 +1,159 @@
+.container2 {
+    text-align: center;
+    padding: 20px;
+    background-color: #163d77;
+    min-height: 100vh;
+  }
+  
+  .nav2 {
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .icon2 {
+    cursor: pointer;
+    font-size: 2rem;
+  }
+  
+  .dropdownMenu2 {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 150px;
+    z-index: 10;
+  }
+  
+  .dropdownItem2 {
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+  }
+  
+  .headerContainer2 {
+    background-color: #dbdec0;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+  
+  .header2 {
+    font-size: 2rem;
+    color: black;
+    -webkit-text-stroke: 0.5px red;
+    font-family: "Irish Grover";
+  }
+  
+  .searchContainer2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .input2 {
+    padding: 10px;
+    font-size: 1rem;
+    width: 60%;
+    border: 2px solid #86b890;
+    border-radius: 5px;
+    outline: none;
+    background-color: #ffffff;
+  }
+  
+  .favoriteButton2 {
+    background-color: #ffc107;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    color: #333333;
+  }
+  
+  .blogItem2 {
+    border: 2px solid rgb(14, 31, 17);
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    color: white;
+  }
+  
+  .profileMenu2 {
+    position: absolute;
+    right: 10px;
+  }
+  
+  .alignbutton2 {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .quote2 {
+    font-style: italic;
+    color: white;
+    margin-top: 10px;
+  }
+  
+  .footer {
+    width: 101.2%;
+    border-top: 1px solid #ddd;
+    padding: 1rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    background-color: black;
+    color: white;
+  }
+  
+  .footerLink {
+    text-decoration: none;
+    color: #fafafa;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  .popupOverlay2 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup2 {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  .closeButton2 {
+    margin-top: 10px;
+    padding: 8px 16px;
+    border: none;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  

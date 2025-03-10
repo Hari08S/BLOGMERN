@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Login.css"; // Import the external CSS file
 
 export default function AuthPage() {
   const [isRegister, setIsRegister] = useState(false);
@@ -7,6 +8,7 @@ export default function AuthPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
   const validateInputs = () => {
     if (!email || !password || (isRegister && !username)) {
       alert("  Information is not completely filled \n\nPlease fill all the fields to continue.");
@@ -33,41 +35,42 @@ export default function AuthPage() {
       navigate("/choose-role");
     }
   };
+
   return (
-    <div style={pageStyle}>
-      <img src="blurred_image.png" alt="stories" style={pageStyle} />
-      <div style={formStyle}>
+    <div className="page">
+      <img src="blurred_image.png" alt="stories" className="background-image" />
+      <div className="form-container">
         <h2>{isRegister ? "Register" : "Sign In"}</h2>
         {isRegister && (
           <input
             type="text"
             placeholder="Username"
-            style={inputStyle}
+            className="input"
             onChange={(e) => setUsername(e.target.value)}
           />
         )}
         <input
           type="email"
           placeholder="Email"
-          style={inputStyle}
+          className="input"
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          style={inputStyle}
+          className="input"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleSubmit} style={buttonStyle}>
+        <button onClick={handleSubmit} className="button">
           {isRegister ? "REGISTER" : "SIGN IN"}
         </button>
         {!isRegister && (
-          <p style={linkStyle} onClick={() => setIsRegister(true)}>
+          <p className="link" onClick={() => setIsRegister(true)}>
             Create an account
           </p>
         )}
         {isRegister && (
-          <p style={linkStyle} onClick={() => setIsRegister(false)}>
+          <p className="link" onClick={() => setIsRegister(false)}>
             I already have an account
           </p>
         )}
@@ -75,45 +78,3 @@ export default function AuthPage() {
     </div>
   );
 }
-
-const pageStyle = {
-  height: "100vh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "white",
-  position: "relative",
-};
-
-const formStyle = {
-  backgroundColor: "#d1c096",
-  padding: "30px",
-  borderRadius: "15px",
-  width: "350px",
-  textAlign: "center",
-  position: "absolute",
-};
-
-const inputStyle = {
-  width: "100%",
-  padding: "10px",
-  margin: "10px 0px",
-  borderRadius: "5px",
-  border: "none",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "10px",
-  margin: "10px 5px",
-  backgroundColor: "#4a69bd",
-  color: "white",
-  borderRadius: "10px",
-  cursor: "pointer",
-};
-
-const linkStyle = {
-  color: "black",
-  cursor: "pointer",
-  marginTop: "10px",
-};
