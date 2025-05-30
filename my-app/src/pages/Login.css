@@ -1,4 +1,4 @@
-.page {
+.page100 {
     height: 100vh;
     display: flex;
     align-items: center;
@@ -17,7 +17,7 @@
     z-index: -1;
   }
   
-  .form-container {
+  .form-container100 {
     background-color: #d1c096;
     padding: 30px;
     border-radius: 15px;
@@ -26,7 +26,7 @@
     position: absolute;
   }
   
-  .input {
+  .input100 {
     width: 100%;
     padding: 10px;
     margin: 10px 0px;
@@ -34,7 +34,7 @@
     border: none;
   }
   
-  .button {
+  .button100 {
     width: 100%;
     padding: 10px;
     margin: 10px 5px;
@@ -45,7 +45,7 @@
     border: none;
   }
   
-  .link {
+  .link100 {
     color: black;
     cursor: pointer;
     margin-top: 10px;

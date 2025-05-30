@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
-import "./ChooseRole.css"; // Import the external CSS file
+import "./ChooseRole.css";
 
 function ChooseRole() {
   const navigate = useNavigate();
