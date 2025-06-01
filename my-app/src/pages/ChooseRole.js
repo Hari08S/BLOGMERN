@@ -3,7 +3,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import "./ChooseRole.css";
 
-function ChooseRole() {
+function ChooseRole({ user, onLogout }) {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [popupContent, setPopupContent] = useState("");
@@ -33,7 +33,7 @@ function ChooseRole() {
               <div className="dropdownItem1" onClick={() => navigate("/profile")}>
                 My Profile
               </div>
-              <div className="dropdownItem1" onClick={() => navigate("/")}>
+              <div className="dropdownItem1" onClick={onLogout}>
                 Log Out
               </div>
             </div>

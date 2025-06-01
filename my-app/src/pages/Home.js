@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import "./Home.css"; // Import the external CSS file
+import "./Home.css";
 
 function Home() {
   const [popupContent, setPopupContent] = useState("");
@@ -68,7 +68,9 @@ function Home() {
         <div className="popupOverlay" onClick={closePopup}>
           <div className="popup" onClick={(e) => e.stopPropagation()}>
             <p>{popupContent}</p>
-            <button className="closeButton" onClick={closePopup}>Close</button>
+            <button className="closeButton" onClick={closePopup}>
+              Close
+            </button>
           </div>
         </div>
       )}

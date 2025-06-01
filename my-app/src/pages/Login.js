@@ -12,15 +12,15 @@ export default function AuthPage({ onLogin }) {
 
   const validateInputs = () => {
     if (!email || !password || (isRegister && !username)) {
-      alert("Information is not completely filled\n\nPlease fill all the fields to continue.");
+      alert("Please fill all the fields to continue.");
       return false;
     }
     if (isRegister && /[^a-zA-Z0-9]/.test(username)) {
-      alert("Invalid Username\n\nUsernames should only contain letters and numbers.\nTry new valid username.");
+      alert("Usernames should only contain letters and numbers.");
       return false;
     }
     if (!email.includes("@")) {
-      alert("Invalid Email\n\nEmail addresses must contain '@'.\nExample: user@example.com");
+      alert("Email addresses must contain '@'. Example: user@example.com");
       return false;
     }
     return true;
@@ -37,10 +37,10 @@ export default function AuthPage({ onLogin }) {
         if (result.data.success) {
           alert(result.data.message);
           if (isRegister) {
-            setIsRegister(false); // Switch to login after successful registration
+            setIsRegister(false);
           } else {
-            onLogin(result.data.user); // Set user in App.js
-            navigate("/choose-role"); // Redirect to choose role after login
+            onLogin(result.data.user);
+            navigate("/choose-role");
           }
         } else {
           alert(result.data.message);
@@ -56,30 +56,35 @@ export default function AuthPage({ onLogin }) {
     <div className="page100">
       <img src="blurred_image.png" alt="stories" className="background-image" />
       <div className="form-container100">
-        <h2>{isRegister ? "Register" : "Sign In"}</h2>
-        {isRegister && (
+        <div className="h2">{isRegister ? "Register" : "Sign In"}</div>
+        <form onSubmit={handleSubmit}>
+          {isRegister && (
+            <input
+              type="text"
+              placeholder="Username"
+              className="input100"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          )}
           <input
-            type="text"
-            placeholder="Username"
+            type="email"
+            placeholder="Email"
             className="input100"
-            onChange={(e) => setUsername(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-        )}
-        <input
-          type="email"
-          placeholder="Email"
-          className="input100"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          className="input100"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleSubmit} className="button100">
-          {isRegister ? "REGISTER" : "SIGN IN"}
-        </button>
+          <input
+            type="password"
+            placeholder="Password"
+            className="input100"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button type="submit" className="button100">
+            {isRegister ? "REGISTER" : "SIGN IN"}
+          </button>
+        </form>
         {!isRegister && (
           <p className="link100" onClick={() => setIsRegister(true)}>
             Create an account

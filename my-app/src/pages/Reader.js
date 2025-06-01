@@ -29,24 +29,38 @@ function Reader({ user }) {
   const [favorites, setFavorites] = useState([]);
   const [showFavorites, setShowFavorites] = useState(false);
   const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [popupContent, setPopupContent] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const response = await axios.get("http://localhost:3001/all-blogs");
-      if (response.data.success) setBlogs(response.data.blogs);
+      console.log("Fetched all blogs:", response.data);
+      if (response.data.success) {
+        setBlogs(response.data.blogs || []);
+      } else {
+        setError("Failed to fetch blogs: " + response.data.message);
+        setBlogs([]);
+      }
     } catch (err) {
       console.error("Error fetching blogs:", err);
+      setError("Error fetching blogs: " + err.message);
+      setBlogs([]);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchBlogs();
-    const interval = setInterval(fetchBlogs, 5000); // Poll every 5 seconds
-    return () => clearInterval(interval); // Cleanup on unmount
-  }, []);
+    if (user) {
+      fetchBlogs();
+    }
+  }, [user]);
 
   const handleFooterClick = (content) => {
     setPopupContent(content);
@@ -59,9 +73,7 @@ function Reader({ user }) {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((fav) => fav !== id) : [...prev, id]));
   };
 
-  const handleLogout = () => {
-    navigate("/login");
-  };
+  const handleLogout = () => navigate("/login");
 
   const filteredBlogs = showFavorites
     ? blogs.filter((blog) => favorites.includes(blog._id))
@@ -86,38 +98,65 @@ function Reader({ user }) {
         <div className="favoriteButton2" onClick={() => setShowFavorites(!showFavorites)}>
           {showFavorites ? <Favorite /> : <FavoriteBorder />} Favorites
         </div>
-        <button onClick={fetchBlogs} className="refreshButton">Refresh</button> {/* Optional manual refresh */}
+        <button onClick={fetchBlogs} className="refreshButton" disabled={loading}>
+          {loading ? "Refreshing..." : "Refresh"}
+        </button>
       </div>
       <div>
-        {filteredBlogs.map((blog) => (
-          <div
-            key={blog._id}
-            className="blogItem2"
-            style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/${blog.image || 'default-image.jpg'})` }}
-          >
-            <h2>{blog.title}</h2>
-            <p>{blog.summary}</p>
-            <h3 className="quote2">{blog.content} <br /> - <strong>{blog.author}</strong></h3>
-            <div className="alignbutton2">
-              <button onClick={() => toggleFavorite(blog._id)} className="favoriteButton2">
-                {favorites.includes(blog._id) ? <Favorite /> : <FavoriteBorder />} Favorite
-              </button>
+        {error ? (
+          <p>{error}</p>
+        ) : blogs.length > 0 ? (
+          filteredBlogs.map((blog) => (
+            <div
+              key={blog._id}
+              className="blogItem2"
+              style={{
+                backgroundImage: `url(${blog.image?.data ? `data:${blog.image.contentType};base64,${blog.image.data}` : "https://via.placeholder.com/800x200?text=No+Image"})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+            >
+              <h2>{blog.title}</h2>
+              <p>{blog.summary}</p>
+              <h3 className="quote2">
+                {blog.content} <br /> - <strong>{blog.author}</strong>
+              </h3>
+              <div className="alignbutton2">
+                <button onClick={() => toggleFavorite(blog._id)} className="favoriteButton2">
+                  {favorites.includes(blog._id) ? <Favorite /> : <FavoriteBorder />} Favorite
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>No blogs available. Check back later or try refreshing!</p>
+        )}
+        {loading && <p>Loading new blogs...</p>}
       </div>
       <footer className="footer">
-        <a href="#" className="footerLink" onClick={() => handleFooterClick("For queries, contact us at support@fusiondiaries.com")}>Help</a>
-        <a href="#" className="footerLink" onClick={() => handleFooterClick("Fusion Diaries is a blog platform where users can share their stories.")}>About</a>
-        <a href="#" className="footerLink" onClick={() => handleFooterClick("Joining Fusion Diaries can enhance your writing skills.")}>Careers</a>
-        <a href="#" className="footerLink" onClick={() => handleFooterClick("We value your privacy.")}>Privacy</a>
-        <a href="#" className="footerLink" onClick={() => handleFooterClick("By using this platform, you agree to our guidelines.")}>Terms</a>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("For queries, contact us at support@fusiondiaries.com")}>
+          Help
+        </a>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("Fusion Diaries is a blog platform where users can share their stories.")}>
+          About
+        </a>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("Joining Fusion Diaries can enhance your writing skills.")}>
+          Careers
+        </a>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("We value your privacy.")}>
+          Privacy
+        </a>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("By using this platform, you agree to our guidelines.")}>
+          Terms
+        </a>
       </footer>
       {showPopup && (
         <div className="popupOverlay2" onClick={closePopup}>
           <div className="popup2" onClick={(e) => e.stopPropagation()}>
             <p>{popupContent}</p>
-            <button className="closeButton2" onClick={closePopup}>Close</button>
+            <button className="closeButton2" onClick={closePopup}>
+              Close
+            </button>
           </div>
         </div>
       )}

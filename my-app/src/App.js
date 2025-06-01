@@ -11,20 +11,10 @@ function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: "user@example.com", password: "password" }),
-        });
-        const data = await response.json();
-        if (data.success) setUser(data.user);
-      } catch (err) {
-        console.error("Auth check failed:", err);
-      }
-    };
-    checkAuth();
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
   }, []);
 
   const handleLogin = (userData) => {
@@ -37,15 +27,26 @@ function App() {
     localStorage.removeItem("user");
   };
 
+  const handleUserUpdate = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={user ? <Navigate to="/choose-role" /> : <Login onLogin={handleLogin} />} />
-      <Route path="/choose-role" element={<ChooseRole />} />
-      <Route path="/reader" element={<Reader user={user} />} />
-      <Route path="/blogger" element={<Blogger user={user} />} />
-      <Route path="/profile" element={<Profile user={user} />} />
-      <Route path="*" element={<Navigate to={user ? "/choose-role" : "/"} />} />
+      <Route
+        path="/choose-role"
+        element={user ? <ChooseRole user={user} onLogout={handleLogout} /> : <Navigate to="/login" />}
+      />
+      <Route path="/reader" element={user ? <Reader user={user} /> : <Navigate to="/login" />} />
+      <Route path="/blogger" element={user ? <Blogger user={user} /> : <Navigate to="/login" />} />
+      <Route
+        path="/profile"
+        element={user ? <Profile user={user} onUserUpdate={handleUserUpdate} /> : <Navigate to="/login" />}
+      />
+      <Route path="*" element={<Navigate to={user ? "/choose-role" : "/login"} />} />
     </Routes>
   );
 }

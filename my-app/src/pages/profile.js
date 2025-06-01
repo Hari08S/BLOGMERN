@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./profile.css";
 
-export default function Profile({ user }) { // Accept user as a prop from App.js
+export default function Profile({ user, onUserUpdate }) {
   const [gender, setGender] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [profileImage, setProfileImage] = useState("");
@@ -13,9 +13,9 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
   useEffect(() => {
     if (user) {
       setGender(user.gender || "Not specified");
-      setProfileImage(user.profileImage || "");
+      setProfileImage(user.profileImage || null);
     } else {
-      navigate("/login"); // Redirect to login if no user
+      navigate("/login");
     }
   }, [user, navigate]);
 
@@ -24,9 +24,7 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
       const formData = new FormData();
       formData.append("email", user.email);
       formData.append("gender", gender);
-      if (selectedImage) {
-        formData.append("profileImage", selectedImage);
-      }
+      if (selectedImage) formData.append("profileImage", selectedImage);
 
       const response = await axios.post("http://localhost:3001/update-user", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -35,23 +33,14 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
       if (response.data.success) {
         alert("Profile updated successfully!");
         setEditMode(false);
-
-        // Update the user object with new data
-        const updatedUser = {
-          ...user,
-          gender,
-          profileImage: response.data.profileImage || profileImage,
-        };
-        // Optionally store in localStorage if needed
-        localStorage.setItem("user", JSON.stringify(updatedUser));
-        // Update parent state (App.js) - Note: This requires a callback prop
-        // For now, we'll assume App.js handles user state
+        const updatedUser = response.data.user;
+        onUserUpdate(updatedUser);
       } else {
-        alert("Failed to update profile. Please check the server.");
+        alert("Failed to update profile: " + response.data.message);
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("Failed to update profile. Please check the server.");
+      alert("Failed to update profile.");
     }
   };
 
@@ -59,17 +48,16 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
     const file = event.target.files[0];
     if (file) {
       setSelectedImage(file);
-
       const reader = new FileReader();
       reader.onloadend = () => setProfileImage(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  if (!user) return <div>Loading...</div>;
+  if (!user) return null;
 
-  const formattedDate = user.joinedDate
-    ? new Date(user.joinedDate).toLocaleDateString("en-US", {
+  const formattedDate = user.createdAt
+    ? new Date(user.createdAt).toLocaleDateString("en-US", {
         month: "long",
         day: "numeric",
         year: "numeric",
@@ -89,27 +77,36 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
 
         <div className="file-upload-container">
           <input type="file" accept="image/*" id="fileUpload" onChange={handleImageUpload} hidden />
-          <label htmlFor="fileUpload" className="file-upload-btn">📸 Choose Photo</label>
+          <label htmlFor="fileUpload" className="file-upload-btn">
+            📸 Choose Photo
+          </label>
           {selectedImage && <p className="file-name">Photo Selected</p>}
         </div>
 
         <h2>{user.username}</h2>
         <hr className="divider" />
 
-        <p><strong>Email:</strong> {user.email}</p>
+        <p>
+          <strong>Email:</strong> {user.email}
+        </p>
         <hr className="divider" />
 
-        <p><strong>Joined:</strong> {formattedDate}</p>
+        <p>
+          <strong>Join:</strong> {formattedDate}
+        </p>
         <hr className="divider" />
 
-        <p><strong>Gender:</strong></p>
+        <p>
+          <strong>Gender:</strong>
+        </p>
         {editMode ? (
           <div className="radio-group">
             <label className="radio-option">
               <input type="radio" value="Male" checked={gender === "Male"} onChange={() => setGender("Male")} /> Male
             </label>
             <label className="radio-option">
-              <input type="radio" value="Female" checked={gender === "Female"} onChange={() => setGender("Female")} /> Female
+              <input type="radio" value="Female" checked={gender === "Female"} onChange={() => setGender("Female")} />{" "}
+              Female
             </label>
           </div>
         ) : (
@@ -119,11 +116,17 @@ export default function Profile({ user }) { // Accept user as a prop from App.js
         <hr className="divider" />
         <div className="button-group">
           {editMode ? (
-            <button className="save-btn" onClick={handleSave}>Save</button>
+            <button className="save-btn" onClick={handleSave}>
+              Save
+            </button>
           ) : (
-            <button className="edit-btn" onClick={() => setEditMode(true)}>Edit</button>
+            <button className="edit-btn" onClick={() => setEditMode(true)}>
+              Edit
+            </button>
           )}
-          <button className="back-btn" onClick={() => navigate("/choose-role")}>Back to Dashboard</button>
+          <button className="back-btn" onClick={() => navigate("/choose-role")}>
+            Back to Dashboard
+          </button>
         </div>
       </div>
     </div>
