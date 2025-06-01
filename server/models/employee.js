@@ -1,22 +1,31 @@
 const mongoose = require("mongoose");
 
+const BlogSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  summary: { type: String, required: true },
+  content: { type: String, required: true },
+  author: { type: String, required: true },
+  authorEmail: { type: String, required: true },
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
+});
+
 const EmployeeSchema = new mongoose.Schema({
-  username: String,
-  email: String,
-  password: String,
+  username: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   gender: { type: String, default: "Not specified" },
-  joinedDate: { type: Date, default: Date.now },
-  profileImage: String,
-  blogs: [{
-    id: Number,
-    title: String,
-    summary: String,
-    content: String,
-    author: String,
-    image: String,
-    createdAt: { type: Date, default: Date.now }
-  }],
-  isAdmin: { type: Boolean, default: false }
+  profileImage: {
+    data: Buffer,
+    contentType: String,
+  },
+  blogs: [BlogSchema],
+  isAdmin: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
 });
 
 const EmployeeModel = mongoose.model("Employee", EmployeeSchema);
