@@ -170,7 +170,7 @@ app.post("/add-blog", upload.single("image"), async (req, res) => {
     const image = req.file
       ? { data: req.file.buffer, contentType: req.file.mimetype }
       : null;
-    console.log("Adding blog for user:", email, "Title:", title);
+    console.log("Adding blog for user:", email, "Title:", title, "Author:", author);
 
     const user = await EmployeeModel.findOne({ email });
     if (!user) {
@@ -182,7 +182,7 @@ app.post("/add-blog", upload.single("image"), async (req, res) => {
       title,
       summary,
       content,
-      author: author || user.username,
+      author, // Use the provided author from the frontend
       authorEmail: email,
       image,
       createdAt: new Date(),
@@ -223,7 +223,7 @@ app.get("/all-blogs", async (req, res) => {
         console.log(`Processing blog: ${blog.title}, Has image: ${!!blog.image}`);
         return {
           ...blog.toObject(),
-          author: user.username,
+          author: blog.author, // Use blog.author instead of user.username
           _id: blog._id.toString(),
           image: blog.image && blog.image.data
             ? {
@@ -254,7 +254,7 @@ app.get("/user-blogs", async (req, res) => {
     }
     const blogs = user.blogs.map((blog) => ({
       ...blog.toObject(),
-      author: user.username,
+      author: blog.author, // Use blog.author instead of user.username
       _id: blog._id.toString(),
       image: blog.image && blog.image.data
         ? {
@@ -278,7 +278,7 @@ app.put("/update-blog", upload.single("image"), async (req, res) => {
     const image = req.file
       ? { data: req.file.buffer, contentType: req.file.mimetype }
       : undefined;
-    console.log("Updating blog ID:", id, "for user:", email);
+    console.log("Updating blog ID:", id, "for user:", email, "Author:", author);
 
     const user = await EmployeeModel.findOne({ email });
     if (!user) return res.status(404).json({ success: false, message: "User not found" });
@@ -291,14 +291,14 @@ app.put("/update-blog", upload.single("image"), async (req, res) => {
       title,
       summary,
       content,
-      author: author || user.username,
+      author, // Use the provided author from the frontend
       authorEmail: email,
       image: image || user.blogs[blogIndex].image,
       updatedAt: new Date(),
     };
 
     await user.save();
-    console.log("Blog updated:", user.blogs[blogIndex].title);
+    console.log("Blog updated:", user.blogs[blogIndex].title, "Author:", user.blogs[blogIndex].author);
     res.json({
       success: true,
       message: "Blog updated successfully",
