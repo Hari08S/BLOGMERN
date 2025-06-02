@@ -75,13 +75,15 @@ export default function Profile({ user, onUserUpdate }) {
           )}
         </div>
 
-        <div className="file-upload-container">
-          <input type="file" accept="image/*" id="fileUpload" onChange={handleImageUpload} hidden />
-          <label htmlFor="fileUpload" className="file-upload-btn">
-            📸 Choose Photo
-          </label>
-          {selectedImage && <p className="file-name">Photo Selected</p>}
-        </div>
+        {editMode && ( // Conditionally render the file upload section only in edit mode
+          <div className="file-upload-container">
+            <input type="file" accept="image/*" id="fileUpload" onChange={handleImageUpload} hidden />
+            <label htmlFor="fileUpload" className="file-upload-btn">
+              📸 Choose Photo
+            </label>
+            {selectedImage && <p className="file-name">Photo Selected</p>}
+          </div>
+        )}
 
         <h2>{user.username}</h2>
         <hr className="divider" />

@@ -95,7 +95,7 @@ export default function Blogger({ user }) {
       formData.append("title", editedBlog.title);
       formData.append("summary", editedBlog.summary);
       formData.append("content", editedBlog.content);
-      formData.append("author", editedBlog.author || user.username);
+      formData.append("author", editedBlog.author); // Use the edited author
       if (editedBlog.imageFile) formData.append("image", editedBlog.imageFile);
 
       const response = await axios.put("http://localhost:3001/update-blog", formData, {
@@ -182,7 +182,6 @@ export default function Blogger({ user }) {
       });
 
       if (response.data.success) {
-        // Optimistic update: Add the new blog to the state immediately
         const newBlogEntry = {
           ...response.data.blog,
           author: newBlog.author,
@@ -190,7 +189,6 @@ export default function Blogger({ user }) {
         setBlogs((prevBlogs) => [...prevBlogs, newBlogEntry]);
         setShowForm(false);
         setNewBlog({ title: "", summary: "", content: "", author: user.username, imageFile: null });
-        // Fetch the latest blogs to confirm
         await fetchBlogs();
         alert("Blog added successfully!");
       } else {
@@ -356,27 +354,27 @@ export default function Blogger({ user }) {
         )}
       </div>
       <footer className="footer">
-        <a href="#" className="footer-link" onClick={() => handleFooterClick("Contact: support@fusiondiaries.com")}>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("For queries, contact us at support@fusiondiaries.com")}>
           Help
         </a>
-        <a href="#" className="footer-link" onClick={() => handleFooterClick("Fusion Diaries is a blog platform.")}>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("Fusion Diaries is a blog platform where users can share their stories.")}>
           About
         </a>
-        <a href="#" className="footer-link" onClick={() => handleFooterClick("Join Fusion Diaries for writing opportunities.")}>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("Joining Fusion Diaries can enhance your writing skills.")}>
           Careers
         </a>
-        <a href="#" className="footer-link" onClick={() => handleFooterClick("We prioritize user privacy.")}>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("We value your privacy.")}>
           Privacy
         </a>
-        <a href="#" className="footer-link" onClick={() => handleFooterClick("Follow our community guidelines.")}>
+        <a href="#" className="footerLink" onClick={() => handleFooterClick("By using this platform, you agree to our guidelines.")}>
           Terms
         </a>
       </footer>
       {showPopup && (
-        <div className="popup-overlay3" onClick={closePopup}>
-          <div className="popup3" onClick={(e) => e.stopPropagation()}>
+        <div className="popupOverlay2" onClick={closePopup}>
+          <div className="popup2" onClick={(e) => e.stopPropagation()}>
             <p>{popupContent}</p>
-            <button className="close-button3" onClick={closePopup}>
+            <button className="closeButton2" onClick={closePopup}>
               Close
             </button>
           </div>
